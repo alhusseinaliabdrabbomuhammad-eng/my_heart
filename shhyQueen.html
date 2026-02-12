@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إلى ملكتي شاهى | عالمنا السري</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=El+Messiri:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff4d6d;
+            --accent: #ffb3c1;
+            --bg-dark: #050505;
+            --card-bg: #121212;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Cairo', sans-serif;
+            background: var(--bg-dark);
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        #video-background {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            filter: brightness(0.3) blur(2px);
+        }
+
+        /* شاشة الدخول */
+        #login-overlay {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle, #1a1a1a, #000);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 1.5s;
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 40px;
+            border: 1px solid var(--primary);
+            text-align: center;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 0 50px rgba(255, 77, 109, 0.2);
+            width: 320px;
+        }
+
+        input {
+            width: 90%;
+            margin: 10px 0;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            text-align: center;
+            font-size: 1.1rem;
+            outline: none;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+        }
+
+        #main-content {
+            display: none;
+            padding: 40px 20px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .couple-names {
+            font-family: 'El Messiri', serif;
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 20px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px #fff, 0 0 10px var(--primary);
+            }
+
+            to {
+                text-shadow: 0 0 10px #fff, 0 0 20px var(--primary), 0 0 30px var(--primary);
+            }
+        }
+
+        .music-pulse {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: radial-gradient(circle, var(--primary), transparent);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            animation: pulse-shadow 1.2s infinite;
+        }
+
+        @keyframes pulse-shadow {
+            0% {
+                transform: scale(1);
+            }
+
+            70% {
+                transform: scale(1.1);
+                box-shadow: 0 0 0 20px rgba(255, 77, 109, 0);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .typing-box {
+            font-family: 'El Messiri', serif;
+            font-size: 1.8rem;
+            min-height: 50px;
+            margin: 20px 0;
+            color: var(--accent);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+
+        @media (min-width: 600px) {
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (min-width: 900px) {
+            .stats-grid {
+                grid-template-columns: repeat(7, 1fr);
+            }
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 10px 5px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-card h3 {
+            font-size: 1.3rem;
+            margin: 0;
+            color: var(--primary);
+        }
+
+        .stat-card p {
+            font-size: 0.8rem;
+            margin: 0;
+            opacity: 0.8;
+        }
+
+        .heartbeat-card {
+            grid-column: span 1;
+            border: 1px solid var(--primary);
+            background: rgba(255, 77, 109, 0.1);
+        }
+
+        .photo-wrapper {
+            max-width: 450px;
+            margin: 30px auto;
+            border-radius: 25px;
+            overflow: hidden;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .photo-wrapper img {
+            width: 100%;
+            display: block;
+        }
+
+        .messages-container {
+            max-width: 600px;
+            margin: 40px auto;
+        }
+
+        .msg-card {
+            position: relative;
+            background: var(--card-bg);
+            margin: 40px 0;
+            padding: 30px;
+            border-radius: 25px;
+            color: #fff;
+            line-height: 1.8;
+            font-size: 1.2rem;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px) scale(0.9);
+            transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .msg-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(transparent, transparent, transparent, var(--primary));
+            animation: rotate-border 4s linear infinite;
+            z-index: 1;
+        }
+
+        .msg-card::after {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            background: var(--card-bg);
+            border-radius: 22px;
+            z-index: 2;
+        }
+
+        .msg-card span {
+            position: relative;
+            z-index: 3;
+            display: block;
+            text-shadow: 0 0 10px rgba(255, 77, 109, 0.3);
+        }
+
+        .msg-card.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        @keyframes rotate-border {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .falling-heart {
+            position: fixed;
+            color: var(--primary);
+            font-size: 20px;
+            user-select: none;
+            z-index: 1000;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .sparkle {
+            position: fixed;
+            pointer-events: none;
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            z-index: 3000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <video autoplay muted loop playsinline id="video-background">
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-beautiful-pink-flower-petals-falling-353-large.mp4"
+            type="video/mp4">
+    </video>
+
+    <div id="login-overlay">
+        <div class="login-box">
+            <h2 style="color: var(--primary); font-family: 'El Messiri';">بوابة عالمنا السري</h2>
+            <input type="text" id="queenName" placeholder="اسم ملكتي...">
+            <input type="password" id="pass" placeholder="التاريخ السري ...">
+            <button onclick="unlock()">دخول ❤️</button>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <div class="couple-names"> بطوطتى❤️</div>
+        <div class="music-pulse">❤️</div>
+        <div class="typing-box" id="writer"></div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3><span id="y">0</span></h3>
+                <p>سنة</p>
+            </div>
+            <div class="stat-card">
+                <h3><span id="m">0</span></h3>
+                <p>شهر</p>
+            </div>
+            <div class="stat-card">
+                <h3><span id="d">0</span></h3>
+                <p>يوم</p>
+            </div>
+            <div class="stat-card">
+                <h3><span id="hr">0</span></h3>
+                <p>ساعة</p>
+            </div>
+            <div class="stat-card">
+                <h3><span id="min">0</span></h3>
+                <p>دقيقة</p>
+            </div>
+            <div class="stat-card">
+                <h3><span id="sec">0</span></h3>
+                <p>ثانية</p>
+            </div>
+            <div class="stat-card heartbeat-card">
+                <h3><span id="beats">0</span></h3>
+                <p>دقة قلب</p>
+            </div>
+        </div>
+
+        <div class="photo-wrapper">
+            <img src="https://image2url.com/r2/default/files/1770573666696-6b0f7051-3095-472a-996c-116facd5f1a8.jpg">
+        </div>
+        <div class="photo-wrapper">
+            <img src="https://image2url.com/r2/default/images/1770767483696-e7cf6888-59b4-4471-9ced-a15ee6b24755.jpg">
+        </div>
+        <div class="messages-container" id="msgList"></div>
+    </div>
+
+    <script>
+        const DATA = {
+            pass: "112004",
+            targetName: "شاهى",
+            start: new Date(2004, 0, 1),
+            writerText: "عيناكِ خلقت لتتأمل لا لتقارن بأى شيء آخر ❤... ",
+            quotes: [
+                "بصي ي ست البنات  أنا يمكن مابعرفش أزوق الكلام بس إنتي عارفة معزتك عندي كديه كل سنة ونتي طيبة 💙✌️",
+                "مهما يحصل بينا مش نزعل من بعض ولو في حاجه نقولها مش نخبيها حتي لو شدينا مع بعض وتعصبنا عادي حتي لو حد فينا غلطان وكدا كدا نا الي بصالح وهجبلك الحاجه الحلوة😉😂",
+                "كل سنة وإنتي زي اختي وصحبتي ورفيقة عيد حب سعيد ي بطوطتي وربنا يديمك ليا ي اغلي ماليا♥️",
+                "لو سألتيني إي أكتر حاجة نفسي اشوفها فيكي انك تكوني ديما مبسوطة وفرحانة وربنا يحققلك احلامك ويجبر بخاطرك وتكوني اسعد واحلا شاهييي في الدنيا♥️♥️♥️",
+                "فراشة أنتي ؟ 🤔<br>أم أنك قمر 🌝<br>أم أنني تائه والروح تهواكي جمالكي سحر والوصف لا يكفي♥️<br>يا وردة الجوري هاتان عيناكي👀🤔 ؟♥️",
+            ]
+        };
+
+        function createHeart(isExplosion = false) {
+            const heart = document.createElement('div');
+            heart.className = 'falling-heart';
+            heart.innerHTML = '❤️';
+
+            if (isExplosion) {
+                heart.style.left = '50vw';
+                heart.style.top = '50vh';
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = 10 + Math.random() * 20;
+                heart.style.setProperty('--tx', Math.cos(angle) * velocity + 'vw');
+                heart.style.setProperty('--ty', Math.sin(angle) * velocity + 'vh');
+                heart.style.animation = 'explode 1.5s forwards';
+            } else {
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = '-20px';
+                heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                heart.style.opacity = Math.random();
+            }
+
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 3000);
+        }
+
+        const style = document.createElement('style');
+        style.innerHTML = `@keyframes explode { to { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; } }`;
+        document.head.appendChild(style);
+
+        function unlock() {
+            const qName = document.getElementById('queenName').value.trim();
+            const pass = document.getElementById('pass').value;
+
+            if (qName === DATA.targetName && pass === DATA.pass) {
+                // تشغيل الموسيقى عند الضغط على الزر
+                const music = document.getElementById('bgMusic');
+                music.volume = 0.6; // مستوى الصوت 60%
+                music.play().catch(error => console.log("خطأ في تشغيل الصوت: ", error));
+
+                for (let i = 0; i < 50; i++) setTimeout(() => createHeart(true), i * 10);
+                document.getElementById('login-overlay').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('login-overlay').style.display = 'none';
+                    document.getElementById('main-content').style.display = 'block';
+                    init();
+                }, 1000);
+            } else {
+                alert("بيانات الدخول غير صحيحة يا ملكتي..");
+            }
+        }
+
+        function init() {
+            let i = 0;
+            function type() {
+                if (i < DATA.writerText.length) {
+                    document.getElementById('writer').innerHTML += DATA.writerText.charAt(i);
+                    i++; setTimeout(type, 100);
+                }
+            }
+            type();
+
+            setInterval(() => {
+                const now = new Date();
+                const diff = now - DATA.start;
+                const s = Math.floor(diff / 1000);
+                const mi = Math.floor(s / 60);
+                const h = Math.floor(mi / 60);
+                const d = Math.floor(h / 24);
+                const heartBeats = Math.floor(mi * 72);
+
+                document.getElementById('y').innerText = Math.floor(d / 365);
+                document.getElementById('m').innerText = Math.floor((d % 365) / 30.44);
+                document.getElementById('d').innerText = d % 30;
+                document.getElementById('hr').innerText = h % 24;
+                document.getElementById('min').innerText = mi % 60;
+                document.getElementById('sec').innerText = s % 60;
+                document.getElementById('beats').innerText = heartBeats.toLocaleString();
+            }, 1000);
+
+            setInterval(createHeart, 300);
+
+            const container = document.getElementById('msgList');
+            DATA.quotes.forEach((text, index) => {
+                const card = document.createElement('div');
+                card.className = 'msg-card';
+                card.innerHTML = `<span>${text}</span>`;
+                container.appendChild(card);
+                setTimeout(() => card.classList.add('show'), 2000 + (index * 1500));
+            });
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            const s = document.createElement('div'); s.className = 'sparkle';
+            s.style.left = e.pageX + 'px'; s.style.top = e.pageY + 'px';
+            document.body.appendChild(s); setTimeout(() => s.remove(), 600);
+        });
+    </script>
+</body>
+
+</html>
